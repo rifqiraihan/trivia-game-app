@@ -6,10 +6,10 @@ import {
   Select,
   SelectChangeEvent,
   Button,
-} from '@mui/material';
-import { ICategoryProps } from './interfaces';
+} from "@mui/material";
+import { ICategoryProps } from "./interfaces";
 
-const difficulties = ['', 'easy', 'medium', 'hard'];
+const difficulties = ["", "easy", "medium", "hard"];
 
 export default function CategoryDifficulty({
   category,
@@ -23,14 +23,14 @@ export default function CategoryDifficulty({
     <Box
       sx={{
         // maxWidth: 400,
-        width: '100%',
-        mx: 'auto',
+        width: "100%",
+        mx: "auto",
         mt: 6,
-        display: 'flex',
+        display: "flex",
         padding: 10,
-        flexDirection: 'column',
+        flexDirection: "column",
         gap: 3,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 8,
       }}
     >
@@ -62,8 +62,8 @@ export default function CategoryDifficulty({
         >
           {difficulties.map((diff) => (
             <MenuItem key={diff} value={diff}>
-              {diff === ''
-                ? 'Any Difficulty'
+              {diff === ""
+                ? "Any Difficulty"
                 : diff.charAt(0).toUpperCase() + diff.slice(1)}
             </MenuItem>
           ))}

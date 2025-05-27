@@ -55,19 +55,30 @@ function App() {
     }
   };
 
+  // const handleAnswer = (correct: boolean) => {
+  //   if (correct) setScore((prev) => prev + 1);
+
+  //   if (currentIndex + 1 < questions.length) {
+  //     setCurrentIndex((prev) => prev + 1);
+  //   } else {
+  //     setShowScore(true);
+  //   }
+  // };
+
   const handleAnswer = (correct: boolean) => {
     if (correct) setScore((prev) => prev + 1);
 
-    if (currentIndex + 1 < questions.length) {
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      setShowScore(true);
-    }
+    setTimeout(() => {
+      if (currentIndex + 1 < questions.length) {
+        setCurrentIndex((prev) => prev + 1);
+      } else {
+        setShowScore(true);
+      }
+    }, 5000);
   };
 
   const handleRestart = () => {
     setQuestions([]);
-    setCategories([]);
     setShowScore(false);
     setScore(0);
     setCurrentIndex(0);
@@ -79,8 +90,14 @@ function App() {
 
   return (
     <>
-      <div className="w-full bg-red-500 justify-center">
-        <Typography variant="h3" fontWeight="bold" mb={4} textAlign="center">
+      <div className="w-full md:w-[76vh] h-screen">
+        <Typography
+          variant="h3"
+          fontWeight="bold"
+          mb={4}
+          mt={8}
+          textAlign="center"
+        >
           Trivia Game App
         </Typography>
         {!questions.length && !loading && !showScore && (
@@ -121,8 +138,10 @@ function App() {
 
         {!loading && questions.length > 0 && !showScore && (
           <CardQuestion
+            currentIndex={currentIndex}
             question={questions[currentIndex]}
             onAnswer={handleAnswer}
+            score={score}
           />
         )}
 
