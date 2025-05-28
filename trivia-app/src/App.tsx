@@ -138,6 +138,7 @@ function App() {
 
         {!loading && questions.length > 0 && !showScore && (
           <CardQuestion
+            key={currentIndex}
             currentIndex={currentIndex}
             question={questions[currentIndex]}
             onAnswer={handleAnswer}

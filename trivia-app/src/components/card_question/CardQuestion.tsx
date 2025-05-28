@@ -1,6 +1,13 @@
-import { useState, useEffect } from "react";
-import { Box, Button, Typography, Stack, Alert } from "@mui/material";
-import * as React from "react";
+import { useState, useEffect, useMemo } from "react";
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  Snackbar,
+  Alert,
+  LinearProgress,
+} from "@mui/material";
 import { IQuestionProps } from "./interfaces";
 
 function decodeHTML(html: string) {
@@ -17,14 +24,19 @@ export default function CardQuestion({
 }: IQuestionProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [buffer, setBuffer] = useState(10);
 
   useEffect(() => {
     setSelected(null);
     setIsCorrect(null);
+    setSnackbarOpen(false);
+    setProgress(0);
+    setBuffer(10);
   }, [question]);
 
-  const answers = React.useMemo(() => {
-    console.log(question.incorrect_answers);
+  const answers = useMemo(() => {
     const allAnswers = [...question.incorrect_answers, question.correct_answer];
     return allAnswers.sort(() => Math.random() - 0.5);
   }, [question]);
@@ -35,8 +47,34 @@ export default function CardQuestion({
     const correct = answer === question.correct_answer;
     setSelected(answer);
     setIsCorrect(correct);
+    setSnackbarOpen(true);
     onAnswer(correct);
   };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          return 100;
+        }
+        return prev + 2;
+      });
+
+      setBuffer((prev) => {
+        if (prev >= 100) return 100;
+        return prev + 2.5;
+      });
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, [selected]);
 
   return (
     <Box
@@ -67,6 +105,16 @@ export default function CardQuestion({
         {`${currentIndex + 1}. `} {decodeHTML(question.question)}
       </Typography>
 
+      {selected && (
+        <Box sx={{ mb: 2 }}>
+          <LinearProgress
+            variant="buffer"
+            value={progress}
+            valueBuffer={buffer}
+          />
+        </Box>
+      )}
+
       <Stack spacing={2} mb={2}>
         {answers.map((answer) => {
           const isCorrectAnswer = answer === question.correct_answer;
@@ -92,7 +140,6 @@ export default function CardQuestion({
               variant={variant}
               color={color}
               onClick={() => handleClick(answer)}
-              // disabled={!!selected}
               sx={{ textTransform: "none", textAlign: "left" }}
             >
               {decodeHTML(answer)}
@@ -101,11 +148,21 @@ export default function CardQuestion({
         })}
       </Stack>
 
-      {isCorrect !== null && (
-        <Alert variant="filled" severity={isCorrect ? "success" : "error"}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={isCorrect ? "success" : "error"}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
           {isCorrect ? "Correct answer! 🎉" : "Incorrect answer. 😢"}
         </Alert>
-      )}
+      </Snackbar>
     </Box>
   );
 }
