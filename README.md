@@ -2,6 +2,8 @@
 
 A modern React quiz application built with TypeScript and Material UI that tests your general knowledge. It fetches questions from the Open Trivia DB and presents them with a clean, responsive UI and progress feedback.
 
+Deployed at Vercel : https://trivia-game-app-three.vercel.app/
+
 ## Features
 
 - Multiple choice questions with randomized answers
@@ -19,7 +21,7 @@ A modern React quiz application built with TypeScript and Material UI that tests
 - React Router
 - Vite
 
-## 📦 Installation
+## Installation
 
    git clone https://github.com/your-username/trivia-game-app.git
    
