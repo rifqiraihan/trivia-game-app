@@ -27,7 +27,7 @@ export default function CategoryDifficulty({
   return (
     <Paper
       elevation={6}
-      className="w-full md:min-w-[800px] min-h-[420px] justify-center mx-auto p-8 bg-white flex flex-col gap-6"
+      className="w-full md:min-w-[800px] max-w-[800px] min-h-[420px] justify-center mx-auto p-8 bg-white flex flex-col gap-6"
       sx={{ borderRadius: 6 }}
     >
       <Typography

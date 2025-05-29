@@ -73,17 +73,20 @@ export default function CardQuestion({
     if (!selected) return;
     const timer = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
+        const next = prev + 5;
+        if (next >= 100) {
           clearInterval(timer);
           return 100;
         }
-        return prev + 2;
+        return next;
       });
       setBuffer((prev) => {
-        if (prev >= 100) return 100;
-        return prev + 2.5;
+        const next = prev + 6.25;
+        if (next >= 100) return 100;
+        return next;
       });
     }, 100);
+
     return () => clearInterval(timer);
   }, [selected]);
 
