@@ -13,7 +13,7 @@ export default function ScoreSummary({ score, total, onRestart }: IScoreProps) {
   return (
     <Paper
       elevation={4}
-      className="w-full md:min-w-[800px] min-h-[400px] justify-center mx-auto p-8 bg-white flex flex-col gap-4"
+      className="w-full md:min-w-[800px] min-h-[400px] max-w-[800px] justify-center mx-auto p-8 bg-white flex flex-col gap-4"
       sx={{ borderRadius: 8 }}
     >
       <Typography

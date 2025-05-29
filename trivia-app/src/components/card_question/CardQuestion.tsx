@@ -94,7 +94,7 @@ export default function CardQuestion({
     <>
       <Paper
         elevation={4}
-        className="w-full md:min-w-[800px] mx-auto p-6 bg-white"
+        className="w-full md:min-w-[800px] max-w-[800px] mx-auto p-6 bg-white"
         sx={{ borderRadius: 8 }}
       >
         <Stack spacing={2}>
@@ -178,9 +178,6 @@ export default function CardQuestion({
                     py: 1.5,
                     fontWeight: "bold",
                     borderColor: "#ccc",
-                    ":hover": {
-                      backgroundColor: "#f5f5f5",
-                    },
                   }}
                 >
                   {decodeHTML(answer)}
