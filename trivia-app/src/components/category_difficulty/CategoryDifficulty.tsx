@@ -1,15 +1,14 @@
 import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
+  Paper,
+  Autocomplete,
+  TextField,
   Button,
+  Typography,
+  FormControl,
 } from "@mui/material";
 import { ICategoryProps } from "./interfaces";
 
-const difficulties = ["", "easy", "medium", "hard"];
+const difficulties = ["easy", "medium", "hard"];
 
 export default function CategoryDifficulty({
   category,
@@ -19,60 +18,117 @@ export default function CategoryDifficulty({
   onDifficultyChange,
   onStart,
 }: ICategoryProps) {
+  const selectedCategory =
+    categoryOptions.find((c) => c.id === category) || null;
+  const selectedDifficulty = difficulty || "";
+
+  const isFormValid = !!selectedCategory && !!selectedDifficulty;
+
   return (
-    <Box
-      sx={{
-        // maxWidth: 400,
-        width: "100%",
-        mx: "auto",
-        mt: 6,
-        display: "flex",
-        padding: 10,
-        flexDirection: "column",
-        gap: 3,
-        backgroundColor: "white",
-        borderRadius: 8,
-      }}
+    <Paper
+      elevation={6}
+      className="w-full md:min-w-[800px] min-h-[420px] justify-center mx-auto p-8 bg-white flex flex-col gap-6"
+      sx={{ borderRadius: 6 }}
     >
-      <FormControl fullWidth>
-        <InputLabel id="category-label">Category</InputLabel>
-        <Select
-          labelId="category-label"
-          value={category}
-          label="Category"
-          onChange={(e: SelectChangeEvent) => onCategoryChange(e.target.value)}
+      <Typography
+        sx={{
+          color: "primary.main",
+          fontWeight: "bold",
+          textAlign: "center",
+          fontSize: "1.5rem",
+        }}
+      >
+        🎯 Get Ready for Trivia!
+      </Typography>
+
+      <Typography
+        sx={{
+          color: "text.secondary",
+          textAlign: "center",
+          mb: 2,
+        }}
+      >
+        Choose your favorite category and difficulty to start the challenge!
+      </Typography>
+
+      <FormControl>
+        <Typography
+          sx={{
+            mb: 1,
+            textAlign: "left",
+            fontWeight: "medium",
+            color: "black",
+          }}
         >
-          {categoryOptions.map((cat) => (
-            <MenuItem key={cat.id} value={cat.id}>
-              {cat.name}
-            </MenuItem>
-          ))}
-        </Select>
+          🗂 Category *
+        </Typography>
+        <Autocomplete
+          fullWidth
+          options={categoryOptions}
+          getOptionLabel={(option) => option.name}
+          value={selectedCategory}
+          onChange={(_, newValue) => {
+            onCategoryChange(newValue ? newValue.id : "");
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Select a trivia category..."
+              required
+              sx={{ borderRadius: 2 }}
+            />
+          )}
+          sx={{ borderRadius: 2 }}
+        />
       </FormControl>
 
-      <FormControl fullWidth>
-        <InputLabel id="difficulty-label">Difficulty</InputLabel>
-        <Select
-          labelId="difficulty-label"
-          value={difficulty}
-          label="Difficulty"
-          onChange={(e: SelectChangeEvent) =>
-            onDifficultyChange(e.target.value)
+      <FormControl>
+        <Typography
+          sx={{
+            mb: 1,
+            textAlign: "left",
+            fontWeight: "medium",
+            color: "black",
+          }}
+        >
+          🧠 Difficulty *
+        </Typography>
+        <Autocomplete
+          fullWidth
+          options={difficulties}
+          getOptionLabel={(option) =>
+            option.charAt(0).toUpperCase() + option.slice(1)
           }
-        >
-          {difficulties.map((diff) => (
-            <MenuItem key={diff} value={diff}>
-              {diff === ""
-                ? "Any Difficulty"
-                : diff.charAt(0).toUpperCase() + diff.slice(1)}
-            </MenuItem>
-          ))}
-        </Select>
+          value={selectedDifficulty}
+          onChange={(_, newValue) => {
+            onDifficultyChange(newValue || "");
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Choose your challenge level..."
+              required
+              sx={{ borderRadius: 2 }}
+            />
+          )}
+          sx={{ borderRadius: 2 }}
+        />
       </FormControl>
 
-      <Button variant="contained" size="large" onClick={onStart}>
-        Start Trivia
+      <Button
+        variant="contained"
+        size="large"
+        onClick={onStart}
+        disabled={!isFormValid}
+        sx={{
+          textTransform: "none",
+          borderRadius: 2,
+          mt: 2,
+          fontWeight: "bold",
+        }}
+      >
+        🚀 Start Trivia
       </Button>
-    </Box>
+    </Paper>
   );
 }

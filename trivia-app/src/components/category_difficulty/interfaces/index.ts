@@ -1,10 +1,10 @@
 import { ICategory } from "../../../interfaces";
 
 export interface ICategoryProps {
-  category: string;
+  category: number | "";
   difficulty: string;
   categoryOptions: ICategory[];
-  onCategoryChange: (value: string) => void;
+  onCategoryChange: (value: number | "") => void;
   onDifficultyChange: (value: string) => void;
   onStart: () => void;
 }
